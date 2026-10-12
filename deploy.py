@@ -4,6 +4,7 @@ import sys
 import subprocess
 
 BASE_DIR = Path(__file__).resolve().parent
+DEPLOYED_FILE = BASE_DIR / "deployed_version.txt"
 
 VERSIONS = {
     "1.0": "Aceestver-1.0.py",
@@ -23,13 +24,11 @@ def deploy(version):
     print(f"Preparing deployment of ACEest Fitness v{version}")
 
     filename = VERSIONS.get(version)
-
     if filename is None:
         print(f"DEPLOYMENT FAILED: Version {version} is not approved.")
         return False
 
     app_path = BASE_DIR / filename
-
     if not app_path.is_file():
         print(f"DEPLOYMENT FAILED: Application file not found: {filename}")
         return False
@@ -42,6 +41,11 @@ def deploy(version):
         return False
 
     print(f"Validation passed: {filename}")
+
+    # Record the selected release only after validation.
+    DEPLOYED_FILE.write_text(version + "\n", encoding="utf-8")
+
+    print(f"Recorded deployed version: {version}")
     print(f"Launching ACEest Fitness v{version}...")
 
     subprocess.Popen([sys.executable, str(app_path)], cwd=str(BASE_DIR))
