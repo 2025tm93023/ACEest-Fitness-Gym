@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out ACEest DevOps Rollback project'
+                echo 'Checking out ACEest DevOps project'
                 checkout scm
             }
         }
@@ -13,7 +13,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('flask-app') {
-                    bat 'python -m pip install -r requirements.txt'
+                    sh 'python3 -m pip install -r requirements.txt'
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
         stage('Run Automated Tests') {
             steps {
                 dir('flask-app') {
-                    bat 'python -m pytest -v'
+                    sh 'python3 -m pytest -v'
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('flask-app') {
-                    bat 'docker build -t aceest-fitness-gym .'
+                    sh 'docker build -t aceest-fitness-gym .'
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             echo 'ACEest CI pipeline completed successfully'
         }
         failure {
-            echo 'Pipeline failed. Check the failed stage in Console Output.'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
 }
