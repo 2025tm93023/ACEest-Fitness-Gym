@@ -21,9 +21,14 @@ members = [
 @app.route("/")
 def home():
     return jsonify({
-        "message": "Welcome to ACEest Fitness & Gym",
+        "message": "Welcome to ACEest Fitness & Gym - Version 1.1",
         "status": "Application is running"
     })
+
+
+@app.route("/version")
+def version():
+    return jsonify({"version": "1.1"})
 
 
 @app.route("/health")
